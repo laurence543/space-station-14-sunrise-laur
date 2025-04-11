@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using Content.Server.Connection.Whitelist;
 using Content.Server.Connection.Whitelist.Conditions;
@@ -62,6 +62,20 @@ public sealed partial class ConnectionManager
                     matched = true;
                     denyMessage = Loc.GetString("whitelist-always-deny");
                     break;
+                // Custom Code
+                case ConditionIDWhitelist:
+                    matched = await CheckConditionIDWhitelist(data);
+                    denyMessage = Loc.GetString("whitelist-manual");
+                    //if (matched)
+                    //{
+                    //    condition.Action = ConditionAction.Allow;
+                    //}
+                    //else
+                    //{
+                    //    condition.Action = ConditionAction.Deny;
+                    //}
+                    break;
+                // ///////////
                 case ConditionManualWhitelistMembership:
                     matched = await CheckConditionManualWhitelist(data);
                     denyMessage = Loc.GetString("whitelist-manual");
@@ -118,7 +132,38 @@ public sealed partial class ConnectionManager
     }
 
     #region Condition Checking
+    // Custom Code
+    private async Task<bool> CheckConditionIDWhitelist(NetUserData data)
+    {
+        //string ip = channel.RemoteEndPoint.Address.ToString();
 
+        //var allowedIPs = _cfg.GetCVar(CCVars.WhitelistAllowedIPs); WhitelistAllowedIPs
+        //var clientIP = e.IP.Address.ToString();
+        //bool result = allowedIPs.Contains(clientIP);
+        //return result;
+
+        _sawmill.Info("New User is trying to enter our server");
+        _sawmill.Info($"data.UserId: {data.UserId}");
+        _sawmill.Info($"data.UserName: {data.UserName}");
+        _sawmill.Info($"data.PatronTier: {data.PatronTier}");
+        _sawmill.Info($"data.HWId: {data.HWId}");
+        _sawmill.Info($"data.ModernHWIds: {data.ModernHWIds}");
+
+        var allowedIDs = _cfg.GetCVar(CCVars.WhitelistAllowedIDs);
+        //Console.WriteLine(string.Join(", ", allowedIDs));
+        var clientID = data.UserId.ToString();
+        var result = !allowedIDs.Contains(clientID);  // True if client_id is DEFINATELY NOT IN allowed_ids
+
+        //var result = allowedIDs.Any(allowed_id => allowed_id == clientID);
+        //var result = true;
+
+        _sawmill.Info($"allowedIDs: {allowedIDs}");
+        _sawmill.Info($"clientID: {clientID}");
+        _sawmill.Info($"result: {result}");
+
+        return result;
+    }
+    // ////////////
     private async Task<bool> CheckConditionManualWhitelist(NetUserData data)
     {
         return await _db.GetWhitelistStatusAsync(data.UserId);

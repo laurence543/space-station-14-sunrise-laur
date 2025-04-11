@@ -6,6 +6,14 @@ using Content.Shared.SMES;
 using JetBrains.Annotations;
 using Robust.Shared.Timing;
 
+// ///////////////////////
+// Custom Code
+using Robust.Server.Player;
+using Content.Shared.Roles;
+using Robust.Shared.Prototypes;
+using Content.Shared.Access.Components;
+// ///////////////////////
+
 namespace Content.Server.Power.SMES;
 
 [UsedImplicitly]
@@ -13,6 +21,12 @@ internal sealed class SmesSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+
+    // ///////////
+    // Custom Code
+    [Dependency] private readonly IPlayerManager _players = default!;
+    [Dependency] private readonly EntityManager _entityManager = default!;
+    // ///////////
 
     public override void Initialize()
     {
@@ -31,6 +45,23 @@ internal sealed class SmesSystem : EntitySystem
 
     private void OnBatteryChargeChanged(EntityUid uid, SmesComponent component, ref ChargeChangedEvent args)
     {
+        // ///////////////////////////////////
+        // Custom Code To make infinite energy
+        var playerCount = _players.Sessions.Length;
+        var engineerCount = CountEngineers(_entityManager);
+        var system = IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<BatterySystem>();
+
+        if (playerCount < 16 || engineerCount < 2)
+        {
+            // Check if BatteryComponent exist
+            if (TryComp<BatteryComponent>(uid, out var battery))
+            {
+                // Use method SetCharge via `system`
+                system.SetCharge(uid, battery.MaxCharge, battery);
+            }
+
+        }
+        // ///////////////////////////////////
         UpdateSmesState(uid, component);
     }
 
@@ -75,4 +106,45 @@ internal sealed class SmesSystem : EntitySystem
             _ => ChargeState.Still
         };
     }
+    // ///////////////////////////
+    // Custom Code To make infinite energy
+    public bool IsEngineer(EntityUid entity, EntityManager entityManager)
+    {
+        if (!entityManager.TryGetComponent(entity, out IdCardComponent? idCard))
+            return false;
+
+        if (idCard.JobDepartments.Count == 0)
+            return false;
+
+        var prototypeManager = IoCManager.Resolve<IPrototypeManager>();
+
+        foreach (var department in idCard.JobDepartments)
+        {
+            if (prototypeManager.TryIndex<DepartmentPrototype>(department, out var departmentProto))
+            {
+                if (departmentProto.ID == "Engineering")
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    public int CountEngineers(EntityManager entityManager)
+    {
+        int count = 0;
+
+        foreach (var session in _players.Sessions)
+        {
+            if (session.AttachedEntity is not { Valid: true } entity)
+                continue;
+
+            if (IsEngineer(entity, entityManager))
+                count++;
+        }
+
+        return count;
+    }
+
+    // ///////////////////////////
 }
