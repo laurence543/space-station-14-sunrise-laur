@@ -1,0 +1,13 @@
+Entries:
+- author: Laurence
+  changes:
+  - message: "Added whitelisting by id"
+    type: Add
+  - message: "Added infinite SMES for < 2"
+    type: Tweak
+  - message: "Remove autogrind for StationBankAccountComponent"
+    type: Tweak
+  - message: "Added additional logging (for logging in)"
+    type: Add
+  id: 1
+  time: '2025-04-12T01:43:00.000000+00:00'

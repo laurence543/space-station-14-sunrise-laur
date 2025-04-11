@@ -1,4 +1,4 @@
-﻿using Robust.Shared.Configuration;
+using Robust.Shared.Configuration;
 
 namespace Content.Shared._Sunrise.SunriseCCVars;
 
@@ -227,7 +227,7 @@ public sealed class SunriseCCVars
      */
 
     public static readonly CVarDef<string> LobbyChangelogsList =
-        CVarDef.Create("lobby_changelog.list", "ChangelogSunrise.yml,Changelog.yml", CVar.SERVER | CVar.REPLICATED);
+        CVarDef.Create("lobby_changelog.list", "ChangelogSunrise.yml,Changelog.yml,ChangelogLaurence.yml", CVar.SERVER | CVar.REPLICATED);
 
     /*
      * Cryoteleport
