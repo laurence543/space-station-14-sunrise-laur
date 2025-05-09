@@ -351,6 +351,7 @@
   - type: Item
     size: Tiny
   - type: HTN
+    constantlyReplan: false
     rootTask:
       task: MouseCompound
   - type: Physics
@@ -535,7 +536,7 @@
     baseSprintSpeed : 4
     weightlessAcceleration: 1.5
     weightlessFriction: 1
-    weightlessModifier: 1
+    baseWeightlessModifier: 1
   - type: Damageable
     damageContainer: Biological
     damageModifierSet: Moth
@@ -1380,8 +1381,8 @@
       state: body-overlay-2
       visible: false
     - map: [ "ears" ]
+    - map: [ "outerClothing" ] #Sunrise-edit
     - map: [ "id" ]
-    - map: [ "outerClothing" ]
     - map: [ "mask" ]
     - map: [ "head" ]
     - map: [ "clownedon" ]
@@ -1754,6 +1755,8 @@
   - type: Item
     size: Tiny
     heldPrefix: 0
+  - type: ItemRepickupCooldown  # Sunrise-add
+    cooldown: 5                 # Sunrise-add
   - type: Clothing
     quickEquip: false
     sprite: Mobs/Animals/mouse.rsi
@@ -1764,6 +1767,7 @@
     factions:
       - Mouse
   - type: HTN
+    constantlyReplan: false
     rootTask:
       task: MouseCompound
   - type: Physics
@@ -3157,6 +3161,9 @@
   - type: Tag
     tags:
     - VimPilot
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 4
   # Sunrise-start
   - type: NightVision
     isToggle: true
@@ -3484,6 +3491,8 @@
         state: hamster-0
   - type: Item
     size: Tiny
+  - type: ItemRepickupCooldown  # Sunrise-add
+    cooldown: 5                 # Sunrise-add
   - type: Physics
   - type: FaxableObject
     insertingState: inserting_hamster

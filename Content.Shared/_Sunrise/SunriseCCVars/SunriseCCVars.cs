@@ -1,9 +1,9 @@
+﻿using Robust.Shared;
 using Robust.Shared.Configuration;
 
 namespace Content.Shared._Sunrise.SunriseCCVars;
 
-[CVarDefs]
-public sealed class SunriseCCVars
+public sealed partial class SunriseCCVars : CVars
 {
     /**
      * TTS (Text-To-Speech)
@@ -31,7 +31,7 @@ public sealed class SunriseCCVars
     /// Amount of seconds before timeout for API
     /// </summary>
     public static readonly CVarDef<int> TTSApiTimeout =
-        CVarDef.Create("tts.api_timeout", 5, CVar.SERVERONLY | CVar.ARCHIVE);
+        CVarDef.Create("tts.api_timeout", 10, CVar.SERVERONLY | CVar.ARCHIVE);
 
     /// <summary>
     /// Option to disable TTS events for client
@@ -203,7 +203,7 @@ public sealed class SunriseCCVars
      */
 
     public static readonly CVarDef<bool> MinPlayersEnable =
-            CVarDef.Create("planet_prison.enable", true, CVar.SERVERONLY);
+            CVarDef.Create("planet_prison.enable", false, CVar.SERVERONLY);
 
     public static readonly CVarDef<int> MinPlayersPlanetPrison =
         CVarDef.Create("planet_prison.min_players", 0, CVar.SERVERONLY);
@@ -227,7 +227,7 @@ public sealed class SunriseCCVars
      */
 
     public static readonly CVarDef<string> LobbyChangelogsList =
-        CVarDef.Create("lobby_changelog.list", "ChangelogSunrise.yml,Changelog.yml,ChangelogLaurence.yml", CVar.SERVER | CVar.REPLICATED);
+        CVarDef.Create("lobby_changelog.list", "ChangelogSunrise.yml,Changelog.yml", CVar.SERVER | CVar.REPLICATED);
 
     /*
      * Cryoteleport
@@ -278,13 +278,13 @@ public sealed class SunriseCCVars
 
     public static readonly CVarDef<int> VotingsDelay = CVarDef.Create("vote.votings_delay", 60);
 
-    public static readonly CVarDef<int> MapVotingCount = CVarDef.Create("vote.map_voting_count", 5);
-
     public static readonly CVarDef<int> RoundVotingCount = CVarDef.Create("vote.round_voting_count", 3);
 
     public static readonly CVarDef<string> RoundVotingChancesPrototype = CVarDef.Create("vote.round_voting_chances_prototype", "SunriseVoteSecret");
 
     public static readonly CVarDef<bool> VoteMusicDisable = CVarDef.Create("vote.music_disable", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    public static readonly CVarDef<bool> ExcludeMaps = CVarDef.Create("vote.exclude_map", false, CVar.SERVERONLY);
 
     /*
      * Preset
@@ -325,8 +325,8 @@ public sealed class SunriseCCVars
     public static readonly CVarDef<bool> JumpEnable =
         CVarDef.Create("jump.enable", true, CVar.SERVER | CVar.REPLICATED);
 
-    public static readonly CVarDef<float> JumpDeadChanse =
-        CVarDef.Create("jump.dead_chanse", 0.001f, CVar.SERVER | CVar.REPLICATED);
+    public static readonly CVarDef<float> JumpDeadChance =
+        CVarDef.Create("jump.dead_chance", 0.001f, CVar.SERVER | CVar.REPLICATED);
 
     public static readonly CVarDef<float> JumpCooldown =
         CVarDef.Create("jump.cooldown", 0.600f, CVar.SERVER | CVar.REPLICATED);
@@ -353,15 +353,22 @@ public sealed class SunriseCCVars
      * Flip
      */
 
-    public static readonly CVarDef<float> FlipDeadChanse =
-        CVarDef.Create("flip.dead_chanse", 0.001f, CVar.SERVER | CVar.REPLICATED);
+    public static readonly CVarDef<float> FlipDeadChance =
+        CVarDef.Create("flip.dead_chance", 0.001f, CVar.SERVER | CVar.REPLICATED);
 
     /**
      * Slip
      */
 
-    public static readonly CVarDef<float> SlipDeadChanse =
-        CVarDef.Create("slip.dead_chanse", 0.001f, CVar.SERVER | CVar.REPLICATED);
+    public static readonly CVarDef<float> SlipDeadChance =
+        CVarDef.Create("slip.dead_chance", 0.001f, CVar.SERVER | CVar.REPLICATED);
+
+    /**
+     * Fall
+     */
+
+    public static readonly CVarDef<float> FallDeadChance =
+        CVarDef.Create("fall.dead_chance", 0.01f, CVar.SERVER | CVar.REPLICATED);
 
     /**
      * VigersRay
@@ -421,4 +428,11 @@ public sealed class SunriseCCVars
 
     public static readonly CVarDef<bool> MuteGhostRoleNotification =
         CVarDef.Create("ghost.mute_role_notification", false, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /*
+     * Heartbeat sound
+     */
+
+    public static readonly CVarDef<bool> PlayHeartBeatSound =
+        CVarDef.Create("heartbeat.play_sound", true, CVar.CLIENTONLY | CVar.ARCHIVE);
 }

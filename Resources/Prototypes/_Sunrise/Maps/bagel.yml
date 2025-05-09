@@ -1,9 +1,8 @@
-﻿- type: gameMap
+- type: gameMap
   id: SunriseBagel
-  mapName: 'Bagel Station'
+  mapName: 'Bagel'
   mapPath: /Maps/_Sunrise/Station/bagel.yml
   minPlayers: 0
-  maxPlayers: 65
   maxRandomOffset: 0
   randomRotation: false
   stations:
@@ -76,10 +75,10 @@
           Mime: [ 1, 1 ]
           Musician: [ 1, 1 ]
           #blueshield
-          BlueShield: [ 1, 1 ]
+          BlueShieldEnsign: [ 1, 1 ]
+          BlueShieldOfficer: [ 5, 5 ]
           #law
           IAA: [ 1, 1 ]
-          Magistrat: [ 1, 1 ]
           Lawyer: [ 3, 3 ]
           NtrOfficer: [ 2, 2 ]
           # silicon
@@ -126,4 +125,7 @@
         - Furs
         - Crew
         - CleaningUp
+        - HumanitarianAid
+        - PersonnelRecovery
+        - CrewEducation
         #- VirusFlesh
